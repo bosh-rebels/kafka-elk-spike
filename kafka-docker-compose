@@ -1,20 +1,5 @@
 version: '2'
 services:
-  logstash:
-    image: docker.elastic.co/logstash/logstash:7.7.0
-    volumes:
-      - "./logstash.conf:/config-dir/logstash.conf"
-    restart: always
-    command: logstash -f /config-dir/logstash.conf
-    ports:
-      - "9600:9600"
-      - "7777:7777"
-    links:
-      - kafka1
-    extra_hosts:
-      - "elasticsearch:192.168.0.28"
-    networks:
-      - kafka-network
   kafka1:
     image: bitnami/kafka:2.5.0
     depends_on:

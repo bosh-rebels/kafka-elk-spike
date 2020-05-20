@@ -1,0 +1,23 @@
+version: '2'
+services:
+  logstash:
+    build:
+      context: logstash/
+    volumes:
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
+      - ./logstash/scripts:/usr/share/scripts:ro
+    ports:
+      - "5000:5000"
+      - "9600:9600"
+      - "7777:7777"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    extra_hosts:
+      - "elasticsearch:192.168.0.28"
+    networks:
+      - elk
+
+networks:
+  elk:
+    driver: bridge
