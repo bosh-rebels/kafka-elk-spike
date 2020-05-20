@@ -15,6 +15,7 @@ services:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
     extra_hosts:
       - "elasticsearch:192.168.0.28"
+      - "kafka1:192.168.0.28"
     networks:
       - elk
 

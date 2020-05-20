@@ -25,4 +25,5 @@ def filter(event)
     event.set("env_id", env_id)
     event.set("app_name", app_name)
     event.set("message", loadedjson.to_json)
+    return [event]
   end
