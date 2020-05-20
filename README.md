@@ -7,7 +7,7 @@ This repository deploys with *docker-compose* an ELK stack which has kafka clust
 2.  [Install Docker compose](https://docs.docker.com/compose/install/)
 3.  Clone this repository:
     ```
-    git clone git@github.com:sermilrod/kafka-elk-docker-compose.git
+    git clone https://github.com/bosh-rebels/kafka-elk-spike.git
     ```
 4. [Configure File Descriptors and MMap](https://www.elastic.co/guide/en/elasticsearch/guide/current/_file_descriptors_and_mmap.html)
 To do so you have to type the following command:
@@ -22,6 +22,7 @@ To do so you have to type the following command:
     $ mkdir esdata
     ```
     By default the *docker-compose.yml* uses *esdata* as the host volumen path name. If you want to use another name you have to edit the *docker-compose.yml* file and create your own structure.
+6. Allocate enough memory to Docker in your local machine (Toolbar -> Docker icon -> Preferences -> Resources)
 
 
 ## Usage
@@ -45,15 +46,17 @@ Login to Kafka container, copy above message into container and publish message
 
 
 ``` bash
-$ docker exec -it {kafka container id}
+$ docker ps - to get runnning docker instancecs 
+$ docker exec -it {kafka container id} bash  - to login to running kafka container in interactive mode
 $ cd /opt/bitnami/kafka/bin
 $ copy message into kafka container 
-$ cat <<EOF > fullmessage-singleline.json
+$ cat <<EOF > fullmessage-singleline.json <hit enter> and copy message in mext line
   {"origin": "rep","index": "485aa9a8-0b15-49b0-a5da-1cb16200c640","timestamp_ns": 1530028516300126053,"tags": {    "source_id": "30ec7020-ddd2-40c1-9f23-389aeef147f1"},"timestamp": 1530028516300,"job": "diego_cell","deployment": "cf","logMessage": {    "environment_id": "prod3",    "timestamp_ns": 1530028516300126053,    "timestamp": 1530028516300,    "app": {        "org": "ca-apm-agent",        "guid": "30ec7020-ddd2-40c1-9f23-389aeef147f1",        "name": "ca-apm-nozzle",        "space": "ca-apm"    },    "source_instance": "0",    "source_type": "APP/PROC/WEB",    "message": "2018/06/26 15:55:16 Posting 2210 metrics"},"ip": "10.58.4.18"}
+  <hit enter and type EOF in next line>
   EOF
 ```
 
-Run following command from within container to publish message to log topic
+Run following command from within container to publish message to the log topic
 
 ```
 $ cd /opt/bitnami/kafka/bin
@@ -65,3 +68,6 @@ After that you should be able to hit Kibana [http://localhost:5601](http://local
 Before you see the log entries generated before you have to configure an index pattern in kibana. Make sure you configure it with these two options:
 * Index name or pattern: payment-*
 * Time-field name: @timestamp
+
+
+## Transforming message from one format to another
