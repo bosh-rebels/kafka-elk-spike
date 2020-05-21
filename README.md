@@ -21,8 +21,8 @@ To do so you have to type the following command:
     $ cd kafka-elk-spike
     $ mkdir esdata
     ```
-    By default the *docker-compose.yml* uses *esdata* as the host volumen path name. If you want to use another name you have to edit the *docker-compose.yml* file and create your own structure.
-6. Allocate enough memory to Docker in your local machine (Toolbar -> Docker icon -> Preferences -> Resources)
+    By default the *elk-docker-compose.yml* uses *esdata* as the host volumen path name. If you want to use another name you have to edit the *elk-docker-compose.yml* file update  volumes: section and create your own structure.
+6. Allocate enough memory(6-8GB) to Docker in your local machine (Toolbar -> Docker icon -> Preferences -> Resources)
 
 
 ## Usage
@@ -32,6 +32,7 @@ Deploy your Kafka+ELK Stack using *docker-compose*:
 ```bash
 $ docker-compose -f kafka-docker-compose up  ( -d optional)
 $ docker-compose -f elk-docker-compose up  ( -d optional)
+$ docker-compose -f logstash-docker-compose up  ( -d optional)
 ```
 
 To pump message to Kafka we are suing '/kafka-console-producer.sh' utility
@@ -71,3 +72,22 @@ Before you see the log entries generated before you have to configure an index p
 
 
 ## Transforming message from one format to another
+
+* Message received by logstash has malformatted json, it has '=>' instead if ':', so to correct that format, we have to use 'mutate filter'
+    
+    ```
+	mutate {
+         replace => ["=>",":"]
+	}
+    ```
+
+* TO restructure input json message to target format we are using 'Ruby filter plugin and external ruby script'
+
+ ```
+    ruby {
+		path => "/usr/share/scripts/updatemessage.rb"
+		script_params => {
+			"source_field" => "message"
+    	}   
+     }
+```
