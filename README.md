@@ -9,7 +9,7 @@ This repository deploys with *docker-compose* an ELK stack which has kafka singl
     ```
     git clone https://github.com/bosh-rebels/kafka-elk-spike.git
     ```
-4. [Configure File Descriptors and MMap](https://www.elastic.co/guide/en/elasticsearch/guide/current/_file_descriptors_and_mmap.html)
+4. If you are running on Linux -  [Configure File Descriptors and MMap](https://www.elastic.co/guide/en/elasticsearch/guide/current/_file_descriptors_and_mmap.html)
 To do so you have to type the following command:
     ```
     sysctl -w vm.max_map_count=262144
@@ -23,12 +23,19 @@ To do so you have to type the following command:
     ```
     By default the *elk-docker-compose.yml* uses *esdata* as the host volumen path name. If you want to use another name you have to edit the *elk-docker-compose.yml* file, update  volumes: section according to your structure.
     
-6. Allocate enough memory(6-8GB) to Docker in your local machine (Toolbar -> Docker icon -> Preferences -> Resources)
+6. Allocate enough memory to docker if you haven't done it already - Allocate memory(6-8GB) to Docker in your local machine (Toolbar -> Docker icon -> Preferences -> Resources)
 
 
 ## Usage
 
 Deploy your Kafka+ELK Stack using *docker-compose*:
+
+Please updated private id with your local machine ip in kafka-elk-spike/logstash/pipeline/logstash.conflogstash.conf
+	
+```bash
+	1. bootstrap_servers => "<local machine ip>:9092"
+	2. hosts => ["<local machine ip>:9200"]
+```
 
 ```bash
 $ docker-compose -f kafka-docker-compose up  ( -d optional)
@@ -92,3 +99,17 @@ Before you see the log entries generated before you have to configure an index p
     	}   
      }
 ```
+
+## Create elastic search index
+
+We can create elastic search index based on data from message, we have to follow following instructions
+* Extract data from incoming message and set in enent attribure e.g  env_id and app_name , we are setting these attributes inside Ruby plugin
+* setup index property of elasticsearch output plugin
+
+```
+elasticsearch {
+       hosts => ["<elasticsearch host ip>:9200"]
+       index => "paymenthub-%{env_id}-%{app_name}-%{+YYYY.MM.dd}"
+	   codec => "json"
+  }
+  ```
