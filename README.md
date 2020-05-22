@@ -1,5 +1,5 @@
-# kafka-elk-docker-compose
-This repository deploys with *docker-compose* an ELK stack which has kafka cluster buffering the logs collection process. This repository tries to make your life easier while testing a similar architecture. It is highly discouraged to use this repository as a production ready solution of this stack.
+# kafka-elk-spike
+This repository deploys with *docker-compose* an ELK stack which has kafka single/cluster buffering the logs collection process. This repository tries to make your life easier while testing a similar architecture. all components kafa, zookeeper, logstash, elasticsearch and kibana can be spin up using single docker-compose, we have decided to split them in 3 groups( [kafka, zookeeper] , [elasticsearch, kibana], [logstash] ) to monitor logs/investigate issues seperately and reduce deployment time of logstash as we were playing with logstash mostly.
 
 ## Setup
 
@@ -21,7 +21,8 @@ To do so you have to type the following command:
     $ cd kafka-elk-spike
     $ mkdir esdata
     ```
-    By default the *elk-docker-compose.yml* uses *esdata* as the host volumen path name. If you want to use another name you have to edit the *elk-docker-compose.yml* file update  volumes: section and create your own structure.
+    By default the *elk-docker-compose.yml* uses *esdata* as the host volumen path name. If you want to use another name you have to edit the *elk-docker-compose.yml* file, update  volumes: section according to your structure.
+    
 6. Allocate enough memory(6-8GB) to Docker in your local machine (Toolbar -> Docker icon -> Preferences -> Resources)
 
 
