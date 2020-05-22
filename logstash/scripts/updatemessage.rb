@@ -15,14 +15,14 @@ def filter(event)
     end
   
     loadedjson = JSON.parse(event.get(@source_field))
-    env_id = loadedjson["logMessage"]["environment_id"]
+    environment_id = loadedjson["logMessage"]["environment_id"]
     app_name = loadedjson["logMessage"]["app"]["name"]
     loadedjson["logMessage"]["app.org"] = loadedjson["logMessage"]["app"]["org"]
     loadedjson["logMessage"]["app.guid"] = loadedjson["logMessage"]["app"]["guid"]
     loadedjson["logMessage"]["app.name"] = loadedjson["logMessage"]["app"]["name"]
     loadedjson["logMessage"]["app.space"] = loadedjson["logMessage"]["app"]["space"]
     loadedjson["logMessage"].delete("app")
-    event.set("env_id", env_id)
+    event.set("environment_id", environment_id)
     event.set("app_name", app_name)
     event.set("message", loadedjson.to_json)
     return [event]
