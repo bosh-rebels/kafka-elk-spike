@@ -30,7 +30,7 @@ To do so you have to type the following command:
 
 Deploy your Kafka+ELK Stack using *docker-compose*:
 
-Please updated private id with your local machine ip in 'kafka-elk-spike/logstash/pipeline/logstash.conflogstash.conf'
+Please updated private id with your local machine ip in kafka-elk-spike/logstash/pipeline/logstash.conflogstash.conf
 	
 	```
 		1. bootstrap_servers => "<local machine ip>:9092"
