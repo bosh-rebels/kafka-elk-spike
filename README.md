@@ -30,11 +30,17 @@ To do so you have to type the following command:
 
 Deploy your Kafka+ELK Stack using *docker-compose*:
 
-Please updated private id with your local machine ip in kafka-elk-spike/logstash/pipeline/logstash.conflogstash.conf
+Please updated private id with your local machine ip in kafka-elk-spike/logstash/pipeline/logstash.conflogstash.conf and logstash-docker-compose file
 	
-```bash
+```text
+    In logstash.conflogstash.conf  file
 	1. bootstrap_servers => "<local machine ip>:9092"
 	2. hosts => ["<local machine ip>:9200"]
+	
+    In logstash-docker-compose file
+    extra_hosts:
+      - "elasticsearch:<local machine ip>"
+      - "kafka1:<local machine ip>"
 ```
 
 ```bash
